@@ -33,19 +33,22 @@ class _HomePageState extends State<HomePage> {
             ),
             actions: [
               PopupMenuButton(
-                  onSelected: choiceAction,
-                  itemBuilder: (BuildContext context) {
-                    return Constants.choices.map((String choice) {
-                      return PopupMenuItem<String>(
-                        value: choice,
-                        child: Text(choice),
-                      );
-                    }).toList();
-                  })
-            ]),
+                 onSelected: (value) {
+                  Provider.of<MyState>(context, listen: false)
+                      .setFilterTodo(value);
+                },
+                itemBuilder: (context) => [
+                      PopupMenuItem(child: Text('All'), value: 'All'),
+                      PopupMenuItem(child: Text('Done'), value: 'Done'),
+                      PopupMenuItem(child: Text('Undone'), value: 'Undone'),
+                    ]),
+          
+            ],
+            ),
       ),
       body: Consumer<MyState>(
-        builder: (context, state, child) => ToDoList(state.list),
+        builder: (context, state, child) =>
+        ToDoList(filterList(state.list, state.filterTodo)),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -55,31 +58,21 @@ class _HomePageState extends State<HomePage> {
               context,
               MaterialPageRoute(
                   builder: (context) => NewTaskView(Todos(input: ''))));
-          //Lägger till Todo i listan av Todos.
+          
+          if (newTodo !=  null) {
           Provider.of<MyState>(context, listen: false).addTodo(newTodo);
-        },
+        }
+        }
       ),
     );
   }
 }
 
-void choiceAction(String choice) {
-  if (choice == Constants.All) {
-    print('All');
-  } else if (choice == Constants.Done) {
-    print('Done');
-  } else if (choice == Constants.Undone) {
-    print('Undone');
+List<Todos> filterList(list, filterTodo) {
+  if (filterTodo == 'Done') {
+    return list.where((item) => item.done == true).toList();
+  } else if (filterTodo == 'Undone') {
+    return list.where((item) => item.done == false).toList();
   }
-}
-
-  
-class Constants {
-  static const List<String> choices = <String>[All, Done, Undone];
-  static const String All = 'All';
-  static const String Done = 'Done';
-  static const String Undone = 'Undone';
-  
-
-  
+  return list;
 }

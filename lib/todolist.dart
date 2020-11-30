@@ -29,10 +29,15 @@ class ToDoList extends StatelessWidget {
               state.checkTodo(todo, newValue);
             }),
         title: Text(
-          todo.input,
-          style: TextStyle(
+          todo.input != null ? todo.input : '',
+          style: todo.done
+          ? TextStyle(
+            decoration: TextDecoration.lineThrough,
             color: Colors.black54
-          ),
+          )
+          : TextStyle(
+            decoration: TextDecoration.none,
+          )
         ),
         trailing: IconButton(
           icon: Icon(Icons.delete),
