@@ -14,7 +14,7 @@ class Todos {
 
   static Map<String, dynamic> toJson(Todos todo) {
     return {
-      'input': todo.input,
+      'title': todo.input,
       'done': todo.done,
     };
   }
@@ -53,11 +53,11 @@ class MyState extends ChangeNotifier {
 
   void checkTodo(Todos todo, bool done) async {
     todo.done = done;
-    await Api.refreshTodo(todo, todo.id);
+    await Api.checkTodo(todo, todo.id);
     await getList();
   }
 
-  void setFilterTodo(String filterToDo) async {
+  void setFilterTodo(String filterTodo) async {
     this._filterTodo = filterTodo;
     notifyListeners();
   }
