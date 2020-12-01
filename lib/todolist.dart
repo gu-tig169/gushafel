@@ -24,7 +24,7 @@ class ToDoList extends StatelessWidget {
             activeColor: barColor,
             focusColor: barColor,
             value: todo.done,
-            onChanged: (bool newValue) {
+            onChanged: (bool newValue) async {
               var state = Provider.of<MyState>(context, listen: false);
               state.checkTodo(todo, newValue);
             }),
@@ -42,7 +42,7 @@ class ToDoList extends StatelessWidget {
         trailing: IconButton(
           icon: Icon(Icons.delete),
           color: Colors.black54,
-          onPressed: () {
+          onPressed: () async {
             var state = Provider.of<MyState>(context, listen: false);
             state.removeTodo(todo);
           },
